@@ -36,10 +36,9 @@ jobs:
 
     - name: Generate Gradle Wrapper & Build APK
       run: |
-        # Генерируем недостающий файл gradlew прямо на сервере GitHub
-        gradle wrapper
+        # Генерируем стабильную версию Gradle 8.7 для Android
+        gradle wrapper --gradle-version 8.7
         
-        # Даем права на выполнение и запускаем сборку
         chmod +x gradlew
         ./gradlew assembleDebug
 
