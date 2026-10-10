@@ -19,6 +19,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
     - name: Setup Android SDK Environment & Accept Licenses
       env:
         ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -28,17 +31,16 @@ jobs:
         # Создаем local.properties, чтобы Gradle знал путь к SDK
         echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-        # Автоматически принимаем все лицензии (чтобы сборка не зависала)
+        # Автоматически принимаем все лицензии
         yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
         
-        # Устанавливаем нужные инструменты и платформу (версия 34)
+        # Устанавливаем нужные инструменты и платформу
         $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-    - name: Generate Gradle Wrapper & Build APK
+    - name: Build Debug APK via Gradle
       run: |
-        # Генерируем стабильную версию Gradle 8.7 для Android
+        # Генерируем wrapper если его нет, используя официальный gradle
         gradle wrapper --gradle-version 8.7
-        
         chmod +x gradlew
         ./gradlew assembleDebug
 
