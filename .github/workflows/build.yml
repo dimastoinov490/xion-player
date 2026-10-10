@@ -23,6 +23,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.7'
 
       - name: Setup Android SDK and accept licenses
         run: |
@@ -46,9 +48,6 @@ jobs:
 
       - name: Build Debug APK via Gradle
         run: |
-          if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version 8.7
-          fi
           chmod +x gradlew
           ./gradlew clean assembleDebug
 
